@@ -150,3 +150,45 @@ window.onload = () => {
     initThought(); 
     searchNow('popular'); 
 };
+/* LUMINA GLOBAL MINING ENGINE v3 - 2026 Edition
+   Logic: 6 Hours Total | 5 Coins Max | Dynamic Speed 
+*/
+(function() {
+    function runGlobalMining() {
+        const today = new Date().toDateString();
+        let lastDate = localStorage.getItem('lastMiningDate');
+        let dailyEarned = parseFloat(localStorage.getItem('dailyEarned')) || 0;
+        let totalBalance = parseFloat(localStorage.getItem('luminaBalance')) || 0;
+
+        // New Day Reset Logic
+        if (lastDate !== today) {
+            localStorage.setItem('dailyEarned', '0');
+            localStorage.setItem('lastMiningDate', today);
+            dailyEarned = 0;
+        }
+
+        const limit = 5.0;
+
+        // Background Extraction Protocol
+        if (dailyEarned < limit) {
+            let increment;
+            
+            // Dynamic Progression: 1-3 Coins (Fast) | 4-5 Coins (Slow)
+            if (dailyEarned < 3.0) {
+                increment = 0.00027; 
+            } else {
+                increment = 0.00023; 
+            }
+
+            totalBalance += increment;
+            dailyEarned += increment;
+
+            // Secure Sync to Storage
+            localStorage.setItem('luminaBalance', totalBalance.toFixed(4));
+            localStorage.setItem('dailyEarned', dailyEarned.toFixed(4));
+        }
+    }
+
+    // Interval set to 1 second for seamless background mining
+    setInterval(runGlobalMining, 1000);
+})();
